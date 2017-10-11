@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简单移入轮播</title>
+    <meta charset="utf-8">
+    <style type="text/css">
+        *{
+            margin:0;
+            padding:0;
+        }
+
+        ul{
+            list-style: none;
+        }
+
+        .clearfix:after{
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+        }
+
+        .task{
+            width: 350px;
+            height: 170px;
+            margin: 100px auto;
+        }
+
+        #swiper{
+            float: right;
+            position: relative;
+            width: 270px;
+            height: 170px;
+            overflow: hidden;
+        }
+
+        #choose{
+            float: left;
+            width: 80px;
+            height: 170px;
+            background: #fff;
+        }
+
+        #choose span{
+            float: left;
+            height:40px;
+            width: 100%;
+            margin-bottom: 3.2px;
+            background: rgba(0,0,0,.7);
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        #choose span:hover{
+            cursor: pointer;
+            color: #f06;
+        }
+        #choose .on{
+            color: #f06;
+        }
+        #swiper .photo{
+            width:270px;
+            height: 170px;
+            overflow: hidden;
+        }
+
+        #swiper .on{
+            color:#f06;
+        }
+
+        #swiper ul{
+            position: relative;
+            left: 0;
+            width:1080px;
+            height: 170px;
+        }
+
+        #swiper ul li{
+            float: left;
+            width: 270px;
+            height: 170px;
+        }
+
+        #swiper ul li img{
+            width: 100%;
+            height: 100%;
+        }
+
+        #swiper .shop{
+            display: block;
+        }
+
+        #swiper .beauty{
+            display: none;
+        }
+
+        #swiper .shoe{
+            display: none;
+        }
+
+        #swiper .sport{
+            display: none;
+        }
+
+        #swiper #num{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 270px;
+            height: 30px;
+            background: rgba(0,0,0,.2);
+        }
+
+        #swiper #num span{
+            float: right;
+            width: 40px;
+            height: 30px;
+            margin-left: 2px;
+            background: #eee;
+            border-radius: 1px;
+            line-height: 30px;
+            text-align: center;
+        }
+        #swiper #num span:hover{
+            cursor: pointer;
+            color: #f06;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="task clearfix">
+        <div id="choose">
+            <span id="shop" class="on">极速免税店</span>
+            <span id="beauty">美妆商城</span>
+            <span id="sport">服装运动</span>
+            <span id="shoe">鞋包配饰</span>
+        </div>
+        <div id="swiper">
+            <div class="shop photo">
+                <ul class="clearfix photo-box">
+                   <li><img src="images/c1.jpg" alt=""></li>
+                   <li><img src="images/c2.jpg" alt=""></li>
+                   <li><img src="images/c3.jpg" alt=""></li>
+                   <li><img src="images/c4.jpg" alt=""></li>
+                </ul>
+            </div>
+            <div class="beauty photo">
+                 <ul class="clearfix photo-box">
+                   <li><img src="images/g1.jpg" alt=""></li>
+                   <li><img src="images/g2.jpg" alt=""></li>
+                   <li><img src="images/g3.jpg" alt=""></li>
+                   <li><img src="images/g4.jpg" alt=""></li>
+                </ul>
+            </div>
+            <div class="sport photo">
+                 <ul class="clearfix photo-box">
+                   <li><img src="images/m1.jpg" alt=""></li>
+                   <li><img src="images/m2.jpg" alt=""></li>
+                   <li><img src="images/m3.jpg" alt=""></li>
+                   <li><img src="images/m4.jpg" alt=""></li>
+                </ul>
+            </div>
+            <div class="shoe photo">
+                 <ul class="clearfix photo-box">
+                   <li><img src="images/s1.jpg" alt=""></li>
+                   <li><img src="images/s2.jpg" alt=""></li>
+                   <li><img src="images/s3.jpg" alt=""></li>
+                   <li><img src="images/s4.jpg" alt=""></li>
+                </ul>
+            </div>
+            <div id="num" class="clearfix">
+                <span>4</span>
+                <span>3</span>
+                <span>2</span>
+                <span  class="on">1</span>
+            </div>
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+
+    var num = document.getElementById('num'),
+        choose = document.getElementById('choose'),
+        items =document.getElementsByClassName('photo'),
+        oPhoto = "shop",
+        photo = document.getElementsByClassName(oPhoto)[0].getElementsByClassName('photo-box')[0],
+        cPhoto,/*当前的photo*/
+        sNum = num.getElementsByTagName('span').length,/*span的数量*/
+        dNSpan= num.getElementsByTagName('span'), /*num的span的节点获取*/
+        dCSpan =choose.getElementsByTagName('span'),
+        cNum = 0;
+
+        num.addEventListener('mouseover', function(e){
+            if(e && e.target){
+                clearInterval(run);
+                cNum = e.target.innerHTML * 1;
+                photo.style.transition = '.6s';
+                photo.style.left =(cNum - 1) * (-1) * 270 + 'px';
+                [].forEach.call(dNSpan,function(item){
+                    (item.innerHTML == cNum) && (item.style.color = '#F06');
+                    (item.innerHTML != cNum) && (item.style.color = '#000');
+                })
+            }
+        }, true);
+
+        num.addEventListener('mouseout', function(e){
+                run = setInterval(runAuto, 2000);
+        }, true);
+
+        choose.addEventListener('mouseover', function(e){
+            clearInterval(run);
+            if(e && e.target.id != 'choose'){
+                [].forEach.call(items, function(item){
+                    oPhoto = e.target.id;
+                    photo = document.getElementsByClassName(oPhoto)[0].getElementsByClassName('photo-box')[0];
+                    cNum = 1;
+                    [].forEach.call(dNSpan,function(item){
+                        (item.innerHTML == cNum) && (item.style.color = '#F06');
+                        (item.innerHTML != cNum) && (item.style.color = '#000');
+                    });
+                    (e.target.id === item.className.split(' ')[0])&&(item.style.display = 'block');
+                    (e.target.id !== item.className.split(' ')[0])&&(item.style.display = 'none');
+                });
+                console.log(cNum);
+                [].forEach.call(dCSpan,function(item,index){
+                    (item.id === e.target.id)&&(dCSpan[index].style.color = '#F06');
+                    (item.id !== e.target.id)&&(dCSpan[index].style.color = '#fff');
+                });
+            }
+        }, true);
+        choose.addEventListener('mouseout', function(e){
+                run = setInterval(runAuto, 2000);
+        },true)
+
+        var run = setInterval(runAuto, 2000);
+
+        function runAuto(){
+            (cNum === 4)&&(cNum = 0);
+            (cNum < 4) &&(++cNum);
+            photo.style.transition = '.6s';
+            photo.style.left =(cNum - 1) * (-1) * 270 + 'px';
+                // console.log(num.getElementsByTagName('span'));
+            [].forEach.call(dNSpan,function(item){
+                (item.innerHTML == cNum) && (item.style.color = '#F06');
+                (item.innerHTML != cNum) && (item.style.color = '#000');
+            });
+        }
+        runAuto();
+</script>
+</body>
+</html>
